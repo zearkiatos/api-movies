@@ -23,6 +23,7 @@ class MongoLib {
           if (error) {
             reject(error);
           }
+          // eslint-disable-next-line no-console
           console.log('Connected successfully to mongo ✅');
           resolve(this.client.db(this.dbName));
         });
