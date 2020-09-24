@@ -10,7 +10,7 @@ const moviesApi = (app) => {
   router.get('/', async (request, response, next) => {
       const { tags } = request.query;
     try {
-      const movies = await moviesServices.getMovies({ tags });
+      const movies = await moviesServices.getMovies(tags);
       response.status(200).json({
         data: movies,
         message: 'movies was listed',
@@ -36,7 +36,7 @@ const moviesApi = (app) => {
   router.post('/', async (request, response, next) => {
       const { body: movie } = request
     try {
-        const createdMovieId = moviesServices.createMovie({ movie });
+        const createdMovieId = await moviesServices.createMovie(movie);
       response.status(200).json({
         data: createdMovieId,
         message: 'movie created',
@@ -50,7 +50,7 @@ const moviesApi = (app) => {
     const { id } = request.params;
     const { body: movie } = request
     try {
-      const updatedMovieId = moviesServices.updateMovie({ id, movie });
+      const updatedMovieId = await moviesServices.updateMovie(movie, id);
       response.status(200).json({
         data: updatedMovieId,
         message: 'movie updated',
@@ -63,7 +63,7 @@ const moviesApi = (app) => {
   router.delete('/:id', async (request, response, next) => {
     const { id } = request.params;
     try {
-      const deleteMovieId = moviesServices.deleteMovie({ id });
+      const deleteMovieId = await moviesServices.deleteMovie(id);
       response.status(200).json({
         data: deleteMovieId,
         message: 'movie deleted',
