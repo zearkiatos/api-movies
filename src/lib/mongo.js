@@ -8,11 +8,16 @@ const DB_NAME = config.dbName;
 const DB_HOST = config.dbHost;
 const DB_PORT = config.dbPort;
 
-const MONGO_URI = `mongodb+srv://${USER}:${PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?retryWrites=true`;
+let MONGO_URI = '';
+
+if (config.environment === 'develop')
+  MONGO_URI = `mongodb://${USER}:${PASSWORD}@${DB_HOST}:${DB_PORT}`;
+else 
+  MONGO_URI = `mongodb+srv://${USER}:${PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?retryWrites=true`;
 
 class MongoLib {
   constructor() {
-    this.client = new MongoClient(MONGO_URI, { useNewUrlParser: true });
+    this.client = new MongoClient(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
     this.dbName = DB_NAME;
   }
 
@@ -29,6 +34,7 @@ class MongoLib {
         });
       });
     }
+    console.log(MongoLib.connection);
     return MongoLib.connection;
   }
 

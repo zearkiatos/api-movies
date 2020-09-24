@@ -8,9 +8,11 @@ services:
     env_file:
       - mongo.env
     volumes:
-      - ".:/data/db2"
+      - "./mongo-volume:/data/db"
     ports:
-      - "27018:27017"
+      - "27017:27017"
+    networks:
+      mongonetwork:
   api:
     build:
       context: .
@@ -22,6 +24,13 @@ services:
       - ".:/app"
     depends_on: 
       - db
+    links:
+      - db
+    networks:
+      mongonetwork:
     ports:
       - "3001:3000"
     tty: true
+networks:
+  mongonetwork:
+    driver: bridge

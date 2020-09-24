@@ -186,11 +186,4 @@ $RECYCLE.BIN/
 
 /.env
 
-/journal
-/diagnostic.data
-*.with
-*.lock
-*.bson
-*.wt
-WiredTiger
-*.turtle
+/mongo-volume
