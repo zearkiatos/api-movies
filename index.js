@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const { config } = require('./config');
 const moviesApi = require('./src/routes/movies');
-const { logErrors, errorHandler } = require('./src/middleware/errorHandlers');
+const { logErrors, errorHandler } = require('./src/middleware/errorHandler');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
