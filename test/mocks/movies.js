@@ -999,4 +999,18 @@ const moviesMock = [{"id":"de62f810-6032-49ba-bbe5-e02528ef5c71","title":"RocknR
 {"id":"110216f3-f60b-4caf-aaab-38b6a19caf4a","title":"Orchestra Wives","cover":"http://dummyimage.com/228x114.jpg/5fa2dd/ffffff","description":"Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.\n\nCras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.\n\nQuisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.","duration":251,"contentRaiting":"NC-17","source":"https://noaa.gov/nibh.json","tags":["Horror|Thriller","Action|Sci-Fi"]},
 {"id":"77bc0049-7101-4bfd-b461-8a0582e29905","title":"Scar","cover":"http://dummyimage.com/103x239.jpg/ff4444/ffffff","description":"Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.\n\nPhasellus in felis. Donec semper sapien a libero. Nam dui.","duration":292,"contentRaiting":"PG-13","source":"https://ucla.edu/ante/vel/ipsum/praesent.json","tags":["Action|Drama|Sci-Fi","Animation|Children|Fantasy|Musical","Action|Adventure|Thriller"]}];
 
-module.exports = { moviesMock }
+const moviesFilteredMock = (tag) => {
+    return moviesMock.filter(movie => movie.tags.includes(tag));
+}
+
+class MovieServiceMock {
+    async getMovies() {
+        return Promise.resolve(moviesMock);
+    }
+
+    async createMovie() {
+        return Promise.resolve(moviesMock[0]);
+    }
+}
+
+module.exports = { moviesMock, moviesFilteredMock, MovieServiceMock }
