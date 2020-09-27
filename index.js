@@ -1,14 +1,20 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const morgan = require('morgan');
+const helmet = require('helmet');
 const { config } = require('./config');
 const moviesApi = require('./src/routes/movies');
 const { logErrors, errorHandler, wrapErrors } = require('./src/middleware/errorHandler');
 const notFoundHandler = require('./src/middleware/notFoundHandler');
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(cors());
+app.use(morgan('tiny'));
+app.use(helmet());
 
 moviesApi(app);
 app.use(notFoundHandler);
