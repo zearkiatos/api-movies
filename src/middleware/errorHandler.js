@@ -1,8 +1,9 @@
+const boom = require('@hapi/boom');
 const { config } = require('../../config');
 
 const withErrorStack = (error, stack) => {
   if (config.dev) {
-    return { error, stack };
+    return { ...error, stack };
   }
 
   return error;
@@ -14,14 +15,25 @@ const logErrors = (error, request, response, next) => {
   next(error);
 };
 
+const wrapErrors = (error, require, response, next) => {
+
+  if(!error.isBoom) {
+    next(boom.badImplementation(error));
+  }
+
+  next(error);
+}
+
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (error, request, response, next) => {
-  response.status(error.status || 500);
-  response.json(withErrorStack(error.message, error.stack));
+  const { output: { statusCode, payload } } = error;
+  response.status(statusCode);
+  response.json(withErrorStack(payload, error.stack));
 };
 
 
 module.exports = {
     logErrors,
-    errorHandler
+    errorHandler,
+    wrapErrors
 }
