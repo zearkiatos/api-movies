@@ -11,6 +11,8 @@ getAllStub.withArgs('movies', tagQuery).resolves(filteredMoviesMocks);
 
 const createStub = sinon.stub().resolves(moviesMock[0].id);
 
+const getMovieStub = sinon.stub().resolves(moviesMock[0].id);
+
 class MongoLibMock {
     getAll(collection, query) {
         return getAllStub(collection, query);
@@ -19,10 +21,15 @@ class MongoLibMock {
     create(collection, data) {
         return createStub(collection, data);
     }
+
+    get(collection, id) {
+        return getMovieStub(collection, id);
+    }
 }
 
 module.exports = {
     getAllStub,
     createStub,
-    MongoLibMock
+    MongoLibMock,
+    getMovieStub
 }
