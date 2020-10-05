@@ -13,6 +13,8 @@ const createStub = sinon.stub().resolves(moviesMock[0].id);
 
 const updateStub = sinon.stub().resolves(moviesMock[0].id);
 
+const deleteStub = sinon.stub().resolves(moviesMock[0].id);
+
 const getMovieStub = sinon.stub().resolves(moviesMock[0]);
 
 class MongoLibMock {
@@ -31,12 +33,18 @@ class MongoLibMock {
     update(collection, id) {
         return updateStub(collection, id);
     }
+
+    delete(id) {
+        return deleteStub(id);
+    }
+    
 }
 
 module.exports = {
     getAllStub,
     createStub,
     updateStub,
+    deleteStub,
     MongoLibMock,
     getMovieStub
 }

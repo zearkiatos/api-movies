@@ -1,7 +1,7 @@
 const assert = require('assert');
 const proxyquire = require('proxyquire');
 const { moviesMock } = require('../mocks/movies');
-const { MongoLibMock, getAllStub, getMovieStub, createStub, updateStub } = require('../mocks/mongoLib');
+const { MongoLibMock, getAllStub, getMovieStub, createStub, updateStub, deleteStub } = require('../mocks/mongoLib');
 
 describe('services - movies', () => {
 
@@ -67,6 +67,22 @@ describe('services - movies', () => {
         });
         it('Should call the update movie by id MongoLib method', async () => {
             const result = await moviesService.updateMovie(moviesMock[0]);
+
+            const expected = moviesMock[0].id;
+
+            assert.deepEqual(result, expected);
+        });
+    });
+
+    describe('When deleteMovie method is called', async () => {
+
+        it('Should call the delete MongoLib method', async () => {
+            await moviesService.deleteMovie('de62f810-6032-49ba-bbe5-e02528ef5c71');
+
+            assert.strictEqual(deleteStub.called, true);
+        });
+        it('Should call the delete movie by id MongoLib method', async () => {
+            const result = await moviesService.deleteMovie('de62f810-6032-49ba-bbe5-e02528ef5c71');
 
             const expected = moviesMock[0].id;
 
