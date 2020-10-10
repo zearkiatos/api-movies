@@ -10,7 +10,8 @@ const config = {
     dbPassword: process.env.DB_PASSWORD,
     dbHost: process.env.DB_HOST,
     dbName: process.env.DB_NAME,
-    debug: process.env.DEBUG_EXPRESS
+    debug: process.env.DEBUG_EXPRESS,
+    cache: process.env.CACHE === 'true'
 };
 
 module.exports = { config }
