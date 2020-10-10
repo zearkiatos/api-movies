@@ -1,7 +1,7 @@
 const express = require('express');
 const MoviesService = require('../services/movies');
 const {
-  movieIdSchema,
+  getMovieSchema,
   createMovieSchema,
   updateMovieSchema,
 } = require('../schemas/movies');
@@ -28,14 +28,14 @@ const moviesApi = (app) => {
 
   router.get(
     '/:id',
-    validationHandler({ id: movieIdSchema }, 'params'),
+    validationHandler(getMovieSchema, 'params'),
     async (request, response, next) => {
       try {
         const { id } = request.params;
         const movie = await moviesServices.getMovie(id);
-        response.status(201).json({
+        response.status(200).json({
           data: movie,
-          message: 'movie retrived',
+          message: 'movie was found',
         });
       } catch (error) {
         next(error);
@@ -50,7 +50,7 @@ const moviesApi = (app) => {
       const { body: movie } = request;
       try {
         const createdMovieId = await moviesServices.createMovie(movie);
-        response.status(200).json({
+        response.status(201).json({
           data: createdMovieId,
           message: 'movie created',
         });
@@ -62,7 +62,7 @@ const moviesApi = (app) => {
 
   router.put(
     '/:id',
-    validationHandler({ id: movieIdSchema }, 'params'),
+    validationHandler(getMovieSchema, 'params'),
     validationHandler(updateMovieSchema),
     async (request, response, next) => {
       const { id } = request.params;
@@ -81,7 +81,7 @@ const moviesApi = (app) => {
 
   router.delete(
     '/:id',
-    validationHandler({ id: movieIdSchema }, 'params'),
+    validationHandler(getMovieSchema, 'params'),
     async (request, response, next) => {
       const { id } = request.params;
       try {
