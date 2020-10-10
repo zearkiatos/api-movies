@@ -53,6 +53,10 @@
       "pre-commit": "lint-staged"
     }
   },
+  "pre-commit": [
+    "test",
+    "coverage"
+  ],
   "lint-staged": {
     "*.js": "eslint --cache --fix"
   },
