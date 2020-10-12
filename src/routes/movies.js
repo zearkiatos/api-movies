@@ -1,11 +1,15 @@
 const express = require('express');
 const MoviesService = require('../services/movies');
 const {
-  movieIdSchema,
+  getMovieSchema,
   createMovieSchema,
   updateMovieSchema,
 } = require('../schemas/movies');
 const validationHandler = require('../middleware/validationHandler');
+
+const cacheResponse = require('../utils/cacheResponse');
+
+const { FIVE_MINUTES_IN_SECONDS, SIXTY_MINUTES_IN_SECONDS } = require('../utils/time');
 
 const moviesApi = (app) => {
   const router = express.Router();
@@ -14,6 +18,7 @@ const moviesApi = (app) => {
   const moviesServices = new MoviesService();
 
   router.get('/', async (request, response, next) => {
+    cacheResponse(response, FIVE_MINUTES_IN_SECONDS);
     const { tags } = request.query;
     try {
       const movies = await moviesServices.getMovies(tags);
@@ -28,14 +33,15 @@ const moviesApi = (app) => {
 
   router.get(
     '/:id',
-    validationHandler({ id: movieIdSchema }, 'params'),
+    validationHandler(getMovieSchema, 'params'),
     async (request, response, next) => {
+      cacheResponse(response, SIXTY_MINUTES_IN_SECONDS);
       try {
         const { id } = request.params;
         const movie = await moviesServices.getMovie(id);
-        response.status(201).json({
+        response.status(200).json({
           data: movie,
-          message: 'movie retrived',
+          message: 'movie was found',
         });
       } catch (error) {
         next(error);
@@ -50,7 +56,7 @@ const moviesApi = (app) => {
       const { body: movie } = request;
       try {
         const createdMovieId = await moviesServices.createMovie(movie);
-        response.status(200).json({
+        response.status(201).json({
           data: createdMovieId,
           message: 'movie created',
         });
@@ -62,7 +68,7 @@ const moviesApi = (app) => {
 
   router.put(
     '/:id',
-    validationHandler({ id: movieIdSchema }, 'params'),
+    validationHandler(getMovieSchema, 'params'),
     validationHandler(updateMovieSchema),
     async (request, response, next) => {
       const { id } = request.params;
@@ -81,7 +87,7 @@ const moviesApi = (app) => {
 
   router.delete(
     '/:id',
-    validationHandler({ id: movieIdSchema }, 'params'),
+    validationHandler(getMovieSchema, 'params'),
     async (request, response, next) => {
       const { id } = request.params;
       try {
